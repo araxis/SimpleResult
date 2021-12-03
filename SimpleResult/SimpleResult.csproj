@@ -6,6 +6,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <LangVersion>10.0</LangVersion>
+    <Authors>Meisam Alifallahi</Authors>
+    <Description>Result&lt;T&gt; is a monad for modelling success (Ok) or failure (Err) operations.</Description>
+    <PackageId>Arax.SimpleResult</PackageId>
+    <Version>1.0.1</Version>
+    <PackageProjectUrl>https://github.com/araxis/SimpleResult</PackageProjectUrl>
   </PropertyGroup>
 
 </Project>

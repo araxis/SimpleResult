@@ -15,7 +15,7 @@ public static class ResultExtensions
         }
     }
 
-    public static void ThrowOnFailure<T>(this Result<T> result)
+    private static void ThrowOnFailure<T>(this Result<T> result)
     {
         var exception = result.ExceptionOrNull();
         if (exception is not null) throw exception;
@@ -43,6 +43,19 @@ public static class ResultExtensions
 
     }
 
+    public static void Switch<T>(this Result<T> result, Action<T> onSuccess, Action<Exception> onFailure)
+    {
+        try
+        {
+            var resultValue= result.GetOrThrow();
+            onSuccess(resultValue);
+        }
+        catch (Exception e)
+        {
+            onFailure(e);
+        }
+    }
+
     public static R Fold<R, T>(this Result<T> result, Func<T, R> onSuccess, Func<Exception, R> onFailure)
     {
         return result.ExceptionOrNull() switch
@@ -52,20 +65,7 @@ public static class ResultExtensions
             
         };
     }
-
-    public static void Switch<T>(this Result<T> result, Action<T> onSuccess, Action<Exception> onFailure)
-    {
-        try
-        {
-           var resultValue= result.GetOrThrow();
-           onSuccess(resultValue);
-        }
-        catch (Exception e)
-        {
-            onFailure(e);
-        }
-    }
- 
+    
 
     public static T GetOrDefault<T>(this Result<T> result,T defaultValue) => result.IsFailure ? defaultValue : result.GetOrDefault();
 

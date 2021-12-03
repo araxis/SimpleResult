@@ -29,14 +29,7 @@ public class ResultExtensionsTests
         result.Should().BeOfType<Result<string>>().Which.ExceptionOrNull().Should().Be(funcException);
     }
 
-    [Fact]
-    public void ThrowOnFailureThrowExceptionWhenResultIfResultSetToException()
-    {
-        var exceptionMessage = "Test";
-        Result<string> result = new Exception(exceptionMessage);
-        var act = () => result.ThrowOnFailure();
-        act.Should().Throw<Exception>().Which.Message.Should().Be(exceptionMessage);
-    }
+  
 
     [Fact]
     public void ThrowOnFailureDosNotThrowExceptionWhenResultIfResultSetToAnyThingsElseException()
