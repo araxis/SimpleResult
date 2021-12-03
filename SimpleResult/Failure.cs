@@ -2,8 +2,8 @@
 
 internal class Failure
 {
-    public Exception? Exception { get; }
-    public Failure(Exception? exception)
+    public Exception Exception { get; }
+    public Failure(Exception exception)
     {
         Exception = exception;
 

@@ -7,8 +7,44 @@ namespace SimpleResult.Tests
 {
     public class ResultShould
     {
+
         [Fact]
-        public void InFailureEqualsTrueAndIsSuccessEqualsFalseWhenSetToException()
+        public void InFailureEqualsTrueAndIsSuccessEqualsFalseWhenCreateResultByFailMethod()
+        {
+            var exception = new Exception("Test");
+
+            Result<string> result =Result<string>.Fail(exception);
+
+            using (new AssertionScope())
+            {
+                result.IsFailure.Should().BeTrue();
+                result.IsSuccess.Should().BeFalse();
+            }
+
+
+        }
+
+        [Fact]
+        public void InFailureEqualsFalseAndIsSuccessEqualsTrueWhenCreateResultBySuccessMethod()
+        {
+            var resultValue = "Test";
+
+            Result<string> result = Result<string>.Success(resultValue);
+
+
+            using (new AssertionScope())
+            {
+                result.IsFailure.Should().BeFalse();
+                result.IsSuccess.Should().BeTrue();
+            }
+            
+
+
+        }
+
+ 
+        [Fact]
+        public void InFailureEqualsTrueAndIsSuccessEqualsFalseWhenSetToExceptionDirectly()
         {
             var resultValue = new Exception("Test");
 
@@ -24,7 +60,7 @@ namespace SimpleResult.Tests
         }
 
         [Fact]
-        public void InFailureEqualsFalseAndIsSuccessEqualsTrueWhenSetValue()
+        public void InFailureEqualsFalseAndIsSuccessEqualsTrueWhenSetValueDirectly()
         {
             var resultValue = "Test";
 
@@ -70,14 +106,22 @@ namespace SimpleResult.Tests
         }
 
         [Fact]
+        public void ExceptionOrNullReturnExceptionWhenResultSetToException()
+        {
+            var resultValue = new Exception("Test");
+
+            Result<string> result = resultValue;
+            result.ExceptionOrNull().Should().Be(resultValue);
+
+
+        }
+
+        [Fact]
         public void ExceptionOrNullReturnNullWhenResultSetToAnyThingsElseException()
         {
             var resultValue = "Test";
 
             Result<string> result = resultValue;
-
-
-
             result.ExceptionOrNull().Should().BeNull();
 
 

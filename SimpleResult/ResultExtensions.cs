@@ -3,7 +3,7 @@
 public static class ResultExtensions
 {
 
-    public static Result<T?> RunCatching<T>(Func<T> block)
+    public static Result<T> RunCatching<T>(Func<T> block)
     {
         try
         {
@@ -15,9 +15,10 @@ public static class ResultExtensions
         }
     }
 
-    public static void ThrowOnFailure<T>(this Result<T?> result)
+    public static void ThrowOnFailure<T>(this Result<T> result)
     {
-        if (result.GetOrDefault() is Failure failure) throw failure.Exception;
+        var exception = result.ExceptionOrNull();
+        if (exception is not null) throw exception;
     }
 
     public static T? GetOrThrow<T>(this Result<T?> result)
@@ -26,7 +27,7 @@ public static class ResultExtensions
        return result.GetOrDefault();
     }
     
-    public static Result<T?> OnSuccess<T>(this Result<T?> result, Action<T?> action)
+    public static Result<T> OnSuccess<T>(this Result<T> result, Action<T> action)
     {
 
         if (result.IsSuccess) action(result.GetOrDefault());
@@ -42,7 +43,7 @@ public static class ResultExtensions
 
     }
 
-    public static TR Fold<TR, T>(this Result<T?> result, Func<T, TR> onSuccess, Func<Exception, TR> onFailure)
+    public static TR Fold<TR, T>(this Result<T> result, Func<T, TR> onSuccess, Func<Exception, TR> onFailure)
     {
         return result.ExceptionOrNull() switch
         {
@@ -52,9 +53,9 @@ public static class ResultExtensions
         };
     }
 
-    public static T? GetOrDefault<T>(this Result<T> result,T? defaultValue) => result.IsFailure ? defaultValue : result.GetOrDefault();
+    public static T GetOrDefault<T>(this Result<T> result,T defaultValue) => result.IsFailure ? defaultValue : result.GetOrDefault();
 
-    public static Result<R?> Map<T,R>(this Result<T?> result,Func<T,R> transform)
+    public static Result<R> Map<T,R>(this Result<T> result,Func<T,R> transform)
     {
 
         return result.ExceptionOrNull() switch
