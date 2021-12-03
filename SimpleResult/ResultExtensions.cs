@@ -21,7 +21,7 @@ public static class ResultExtensions
         if (exception is not null) throw exception;
     }
 
-    public static T? GetOrThrow<T>(this Result<T?> result)
+    public static T GetOrThrow<T>(this Result<T> result)
     {
         result.ThrowOnFailure();
        return result.GetOrDefault();
@@ -43,7 +43,7 @@ public static class ResultExtensions
 
     }
 
-    public static TR Fold<TR, T>(this Result<T> result, Func<T, TR> onSuccess, Func<Exception, TR> onFailure)
+    public static R Fold<R, T>(this Result<T> result, Func<T, R> onSuccess, Func<Exception, R> onFailure)
     {
         return result.ExceptionOrNull() switch
         {
@@ -61,7 +61,7 @@ public static class ResultExtensions
         return result.ExceptionOrNull() switch
         {
             null => Result<R>.Success(transform(result.GetOrDefault())),
-            var exception => Result<R>.Fail(result.ExceptionOrNull()!)
+            var exception => Result<R>.Fail(exception)
             
         };
 

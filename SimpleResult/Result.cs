@@ -4,7 +4,7 @@
     public class Result<T>
     {
         private readonly T _value;
-        private readonly Failure _failure;
+        private readonly Failure? _failure;
 
         private Result(T value, Failure? failure)
         {
