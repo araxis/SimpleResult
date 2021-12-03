@@ -1,7 +1,7 @@
 ﻿namespace SimpleResult
 {
 
-    public class Result<T>
+    public readonly struct Result<T>
     {
         private readonly T _value;
         private readonly Failure? _failure;

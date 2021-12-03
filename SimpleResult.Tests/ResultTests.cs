@@ -5,7 +5,7 @@ using Xunit;
 
 namespace SimpleResult.Tests
 {
-    public class ResultShould
+    public class ResultTests
     {
 
         [Fact]
