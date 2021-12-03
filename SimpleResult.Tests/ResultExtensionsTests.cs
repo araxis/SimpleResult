@@ -65,7 +65,7 @@ public class ResultExtensionsTests
     }
 
     [Fact]
-    public void OnSuccessCallActionIfIsSuccess()
+    public void OnSuccessWillExecuteActionIfIsSuccess()
     {
         var resultValue = "Test";
         var actionCallTest = "";
@@ -96,7 +96,7 @@ public class ResultExtensionsTests
     }
 
     [Fact]
-    public void OnFailureCallActionIfIsFailure()
+    public void OnFailureWillExecuteActionIfIsFailure()
     {
         
         Exception exception = null;
@@ -111,7 +111,7 @@ public class ResultExtensionsTests
     }
 
     [Fact]
-    public void OnFailureDoNotCallActionIfIsSuccess()
+    public void OnFailureWillNotExecuteActionIfIsSuccess()
     {
         
         Exception exception = null;
@@ -188,5 +188,34 @@ public class ResultExtensionsTests
         int Transform(string resultValue) => transFormResult;
         var mapResult = result.Map(Transform);
         result.ExceptionOrNull().Should().NotBeNull();
+    }
+
+    [Fact]
+    public void SwitchWillExecuteOnSuccessIfResultIsSuccess()
+    {
+        var resultValue = "Test";
+        int onSuccessTest = 0;
+        Result<string> result = resultValue;
+
+        void OnSuccess(string input) => onSuccessTest=1;
+        void OnFailure(Exception ex)  { }
+
+        result.Switch(OnSuccess,OnFailure);
+        onSuccessTest.Should().Be(1);
+    }
+
+    [Fact]
+    public void SwitchWillExecuteOnFailureIfResultIsFailure()
+    {
+        
+        int onFailureTest = 0;
+        Result<string> result = new Exception();
+
+        void OnSuccess(string input) { }
+
+        void OnFailure(Exception ex) => onFailureTest = 2;
+
+        result.Switch(OnSuccess,OnFailure);
+        onFailureTest.Should().Be(2);
     }
 }

@@ -53,6 +53,20 @@ public static class ResultExtensions
         };
     }
 
+    public static void Switch<T>(this Result<T> result, Action<T> onSuccess, Action<Exception> onFailure)
+    {
+        try
+        {
+           var resultValue= result.GetOrThrow();
+           onSuccess(resultValue);
+        }
+        catch (Exception e)
+        {
+            onFailure(e);
+        }
+    }
+ 
+
     public static T GetOrDefault<T>(this Result<T> result,T defaultValue) => result.IsFailure ? defaultValue : result.GetOrDefault();
 
     public static Result<R> Map<T,R>(this Result<T> result,Func<T,R> transform)
