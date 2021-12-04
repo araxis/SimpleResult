@@ -36,7 +36,7 @@ Or via the .NET Core command line interface:
         }
     }
 ```
-## OR : more simle
+## OR : more simple
 ```csharp
 public Result<Person> GetPerson(long id)
     {
