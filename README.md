@@ -3,9 +3,9 @@
 
 
 ## Simple Result
-[![Arax.simpleResult - NuGet](https://img.shields.io/badge/nuget-Arax.SimpleResult-blue)](https://www.nuget.org/packages/Arax.SimpleResult)
-[![NuGet](https://img.shields.io/nuget/dt/Arax.SimpleResult.svg)](https://www.nuget.org/packages/Arax.SimpleResult) 
 [![.NET](https://github.com/araxis/SimpleResult/actions/workflows/dotnet.yml/badge.svg)](https://github.com/araxis/SimpleResult/actions/workflows/dotnet.yml)
+[![NuGet](https://img.shields.io/nuget/vpre/Arax.SimpleResult.svg)](https://www.nuget.org/packages/Arax.SimpleResult)
+[![NuGet](https://img.shields.io/nuget/dt/Arax.SimpleResult.svg)](https://www.nuget.org/packages/Arax.SimpleResult) 
 
 `SimpleResult` is a monad for modeling success (Success) or failure (Exception) operations.
 
