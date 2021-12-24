@@ -109,6 +109,7 @@ public void UseResult()
        Result<int> mapResult = result.Map(person => person.Age);
         
        //each path has map function
-       Result<int> foldResult = result.Fold(onSuccess: person => person.Age,onFailure:exception => exception.GetHashCode());
+       Result<int> foldResult = result.Fold(onSuccess: person => person.Age,
+                                            onFailure:exception => exception.GetHashCode());
     }
 ```    
