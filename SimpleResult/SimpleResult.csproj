@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
 
@@ -9,8 +9,20 @@
     <Authors>Meisam Alifallahi</Authors>
     <Description>Result&lt;T&gt; is a monad for modelling success (Ok) or failure (Err) operations.</Description>
     <PackageId>Arax.SimpleResult</PackageId>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
     <PackageProjectUrl>https://github.com/araxis/SimpleResult</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/araxis/SimpleResult</RepositoryUrl>
+    <PackageIcon>logo.png</PackageIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="logo.png" Pack="true" PackagePath=""/>
+    <None Update="logo.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+
 
 </Project>

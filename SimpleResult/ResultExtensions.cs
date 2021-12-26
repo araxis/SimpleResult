@@ -3,11 +3,26 @@
 public static class ResultExtensions
 {
 
-    public static Result<T> RunCatching<T>(Func<T> block)
+
+ 
+    public static Result<T> RunCatching<T>(this Func<T> block)
     {
         try
         {
             return Result<T>.Success(block());
+        }
+        catch (Exception? ex)
+        {
+            return Result<T>.Fail(ex);
+        }
+    }
+
+    public static async Task<Result<T>> RunCatching<T>(this Func<Task<T>> block)
+    {
+        try
+        {
+            var result = await block();
+            return Result<T>.Success(result);
         }
         catch (Exception? ex)
         {
