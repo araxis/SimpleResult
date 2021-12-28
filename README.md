@@ -33,6 +33,7 @@ Or via the .NET Core command line interface:
         catch (Exception e)
         {
             return Result<Person>.Fail(e);
+           
         }
     }
 ```
@@ -53,6 +54,23 @@ public Result<Person> GetPerson(long id)
         }
     }
 ```
+## (new feature) Error result without Exceptions
+    in this case
+    * result.IsFailure is true and
+    * result.ExceptionOrNull() always is null.
+    * result.Errors return list of Errorinfo
+```
+ public record Param(int Prop);
+    
+ public Result<bool> Method(Param param)
+ {
+   if (param.Prop <= 15){
+                                //or list<ErrorInfo>
+      return Result<bool>.Error(new ErrorInfo("error type", "identifier", "error message"));
+   }
+   return Result<bool>.Success(true);
+ }
+```
 ## Basic Usage 
 ```csharp
 public void UseResult()
@@ -68,6 +86,8 @@ public void UseResult()
     
     //if IsFailure == false => exception is null
     var exception = result.ExceptionOrNull();
+    //
+    var errors = result.Errors;
 }
 ```
 ## Try-Catch 
