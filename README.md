@@ -59,7 +59,7 @@ public Result<Person> GetPerson(long id)
     * result.IsFailure is true and
     * result.ExceptionOrNull() always is null.
     * result.Errors return list of Errorinfo
-```
+```csharp
  public record Param(int Prop);
     
  public Result<bool> Method(Param param)
