@@ -11,7 +11,7 @@ public static class ResultExtensions
         {
             return Result<T>.Success(block());
         }
-        catch (Exception? ex)
+        catch (Exception ex)
         {
             return Result<T>.Fail(ex);
         }
@@ -24,7 +24,7 @@ public static class ResultExtensions
             var result = await block();
             return Result<T>.Success(result);
         }
-        catch (Exception? ex)
+        catch (Exception ex)
         {
             return Result<T>.Fail(ex);
         }
@@ -96,4 +96,5 @@ public static class ResultExtensions
 
       
     }
+    
 }

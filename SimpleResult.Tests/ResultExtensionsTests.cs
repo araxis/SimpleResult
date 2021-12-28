@@ -30,6 +30,15 @@ public class ResultExtensionsTests
     }
 
 
+    
+    [Fact]
+    public void GetOrThrowDosNotThrowExceptionIfResultBeError()
+    {
+        Result<string> result = new ErrorInfo("type","i","message");
+        var act = () => result.GetOrThrow();
+        act.Should().NotThrow();
+    }
+
 
     [Fact]
     public void GetOrThrowThrowExceptionIfResultSetToException()

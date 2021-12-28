@@ -9,7 +9,7 @@ namespace SimpleResult.Tests
     {
 
         [Fact]
-        public void InFailureEqualsTrueAndIsSuccessEqualsFalseWhenCreateResultByFailMethod()
+        public void IsFailureEqualsTrueAndIsSuccessEqualsFalseWhenCreateResultByFailMethod()
         {
             var exception = new Exception("Test");
 
@@ -25,7 +25,7 @@ namespace SimpleResult.Tests
         }
 
         [Fact]
-        public void InFailureEqualsFalseAndIsSuccessEqualsTrueWhenCreateResultBySuccessMethod()
+        public void IsFailureEqualsFalseAndIsSuccessEqualsTrueWhenCreateResultBySuccessMethod()
         {
             var resultValue = "Test";
 
@@ -44,7 +44,7 @@ namespace SimpleResult.Tests
 
  
         [Fact]
-        public void InFailureEqualsTrueAndIsSuccessEqualsFalseWhenSetToExceptionDirectly()
+        public void IsFailureEqualsTrueAndIsSuccessEqualsFalseWhenSetToExceptionDirectly()
         {
             var resultValue = new Exception("Test");
 
@@ -60,7 +60,7 @@ namespace SimpleResult.Tests
         }
 
         [Fact]
-        public void InFailureEqualsFalseAndIsSuccessEqualsTrueWhenSetValueDirectly()
+        public void IsFailureEqualsFalseAndIsSuccessEqualsTrueWhenSetValueDirectly()
         {
             var resultValue = "Test";
 
@@ -124,7 +124,38 @@ namespace SimpleResult.Tests
             Result<string> result = resultValue;
             result.ExceptionOrNull().Should().BeNull();
 
+        }
 
+        [Fact]
+        public void ExceptionOrNullReturnNullWhenResultIsError()
+        {
+            var result = Result<string>.Error(new ErrorInfo("", "", ""));
+
+            result.ExceptionOrNull().Should().BeNull();
+        }
+
+        [Fact]
+        public void ErrorsIsEmptyWhenResultIsSucceed()
+        {
+            var result = Result<string>.Success("ok");
+
+            result.Errors.Should().BeEmpty();
+        }
+
+        [Fact]
+        public void ErrorsIsEmptyWhenResultIsFailed()
+        {
+            var result = Result<string>.Fail(new Exception());
+
+            result.Errors.Should().BeEmpty();
+        }
+
+        [Fact]
+        public void ErrorsIsNotEmptyWhenResultIsError()
+        {
+            var result = Result<string>.Error(new ErrorInfo("", "", ""));
+
+            result.Errors.Should().HaveCount(1);
         }
     }
 }
