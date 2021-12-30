@@ -55,7 +55,7 @@ public Result<Person> GetPerson(long id)
     }
 ```
     
-## Error result without Exceptions 
+## Error result without Exceptions (maybe change in future!!!)
     
 in this case
 * result.IsFailure is true and
