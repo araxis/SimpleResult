@@ -1,4 +1,6 @@
-﻿namespace SimpleResult;
+﻿using System;
+
+namespace SimpleResult;
 public static class ResultExtensions
 {
     public static void ThrowOnFailure(this IResult result)
@@ -69,6 +71,7 @@ public static class ResultExtensions
     }
 
 
+    [Obsolete("OnFailure is deprecated. Please use new version.")]
     public static void Switch<TResult>(this TResult result, Action onSuccess, Action<Exception> onFailure) where TResult : IResult
     {
         try
@@ -81,6 +84,20 @@ public static class ResultExtensions
             onFailure(e);
         }
     }
+
+    public static void Switch<TResult>(this TResult result, Action onSuccess, Action<Exception?,Errors> onFailure) where TResult : IResult
+    {
+        if (result.IsSuccess)
+        {
+            onSuccess();
+        }
+        else
+        {
+            onFailure(result.ExceptionOrNull(),result.Errors);
+        }
+    }
+
+    [Obsolete("OnFailure is deprecated. Please use new version.")]
     public static void Switch<T>(this IResult<T> result, Action<T> onSuccess, Action<Exception> onFailure)
     {
         try
@@ -93,6 +110,19 @@ public static class ResultExtensions
             onFailure(e);
         }
     }
+    public static void Switch<T>(this IResult<T> result, Action<T> onSuccess, Action<Exception?,Errors> onFailure)
+    {
+        if (result.IsSuccess)
+        {
+            onSuccess(result.GetOrDefault());
+        }
+        else
+        {
+            onFailure(result.ExceptionOrNull(),result.Errors);
+        }
+    }
+
+    [Obsolete("OnFailure is deprecated. Please use new version.")]
     public static TReturn Fold<TReturn, TResult>(this TResult result, Func<TReturn> onSuccess, Func<Exception, TReturn> onFailure) where TResult : IResult
     {
         return result.ExceptionOrNull() switch
@@ -102,6 +132,14 @@ public static class ResultExtensions
 
         };
     }
+    public static TReturn Fold<TReturn, TResult>(this TResult result, Func<TReturn> onSuccess, Func<Exception?,Errors, TReturn> onFailure) where TResult : IResult
+    {
+        return result.IsSuccess 
+            ? onSuccess() 
+            : onFailure(result.ExceptionOrNull(), result.Errors);
+    }
+    
+    [Obsolete("OnFailure is deprecated. Please use new version.")]
     public static TReturn Fold<TReturn, T>(this IResult<T> result, Func<T, TReturn> onSuccess, Func<Exception, TReturn> onFailure)
     {
         return result.ExceptionOrNull() switch
@@ -110,6 +148,13 @@ public static class ResultExtensions
             var exception => onFailure(exception)
 
         };
+    }
+
+    public static TReturn Fold<TReturn, T>(this IResult<T> result, Func<T, TReturn> onSuccess, Func<Exception?,Errors, TReturn> onFailure)
+    {
+        return result.IsSuccess 
+            ? onSuccess(result.GetOrDefault()) 
+            : onFailure(result.ExceptionOrNull(), result.Errors);
     }
     public static Result<TR> Map<TL, TR>(this Result<TL> result, Func<TL, TR> transform)
     {
