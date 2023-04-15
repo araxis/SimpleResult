@@ -2,10 +2,10 @@
 
   <PropertyGroup>
 
-    <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net6.0;net7.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <LangVersion>10.0</LangVersion>
+    <LangVersion>11.0</LangVersion>
     <Authors>Meisam Alifallahi</Authors>
     <Description>Result&lt;T&gt; is a monad for modelling success (Ok) or failure (Err) operations.</Description>
     <PackageId>Arax.SimpleResult</PackageId>

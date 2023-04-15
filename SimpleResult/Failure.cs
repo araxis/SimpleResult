@@ -2,30 +2,18 @@
 
 internal class Failure
 {
-
     public Exception? Exception { get; }
-    public IEnumerable<ErrorInfo> ErrorInfos { get; } 
-    public Failure(IEnumerable<ErrorInfo> errorInfos)
+    public IReadOnlyCollection<IError> ErrorInfos { get; } 
+    public Failure(params IError[] errorInfos)
     {
-        ErrorInfos = errorInfos ?? new List<ErrorInfo>();
+        ErrorInfos =  new List<IError>(errorInfos);
         Exception = null;
     }
-    public Failure(Exception exception)
+    public Failure(Exception exception,params IError[] errors)
     {
         Exception = exception;
-        ErrorInfos = new List<ErrorInfo>();
+        ErrorInfos = errors.ToList();
     }
-    
-    public override bool Equals(object? other)
-    {
-        if (other is null) return false;
-        return other is Failure otherFailure && Exception == otherFailure.Exception;
-    }
-    
-    public override int GetHashCode()
-    {
-        return Exception.GetHashCode();
-    }
-
-   // public override string ToString() => $"Failure({Exception})";
+  
+ 
 }
