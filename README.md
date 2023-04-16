@@ -133,6 +133,66 @@ For results with values, you can access the value within the Fold method:
 
     Console.WriteLine(message);
 ```
+## Mapping a Result to Another Type
+The Map method allows you to transform the value of a Result<T> object into another type, while preserving the success or failure state of the original result. The method accepts a function that takes the current value of the result and returns a new value of a different type.
+```csharp
+    var result = Result<int>.Success(10);
+
+    // Mapping to another type
+    var newResult = result.Map(x => x.ToString());
+
+    // Output
+    // newResult.IsSuccess == true
+    // newResult.GetOrDefault() == "10"
+
+    var result = Result<int>.Fail("Something went wrong");
+    var newResult = result.Map(x => x.ToString());
+
+    // Output
+    // newResult.IsFailure == true
+    // newResult.Errors == { "Something went wrong" }
+
+
+```
+
+## Asynchronous Extensions
+The SimpleResult library also provides asynchronous extensions, allowing you to handle success and failure scenarios in async methods. Here's a quick overview of the available async extension methods:
+
+- OnSuccess: Perform an async action when the result is successful.
+- OnFailure: Perform an async action when the result is unsuccessful.
+- OnFailure<TError>: Perform an async action when the result is unsuccessful and contains a specific error type.
+- OnException: Perform an async action when the result contains an exception.
+- OnException<T>: Perform an async action when the result contains a specific exception type.
+- OnInnerException<T>: Perform an async action when the result contains an inner exception of a specific type.
+- Switch: Execute different async actions based on the success or failure of the result.
+- Fold: Transform the result into another type using async actions based on the success or failure of the result.
+- Map: Map a result to another type using an async transformation function.
+
+Here's an example of using the OnSuccess async extension method:
+```csharp
+    public async Task UseResultAsync()
+    {
+        var result = await FetchPersonAsync(1);
+        await result.OnSuccess(async person =>
+        {
+            await DoSomethingAsync(person);
+        });
+    }
+```
+And here's an example of using the OnFailure async extension method with a specific error type:
+```csharp
+    public async Task UseResultAsync()
+    {
+        var result = await DangerousOperationAsync();
+        await result.OnFailure<CustomError>(async (exception, errors) =>
+        {
+            Console.WriteLine($"Caught CustomError: {string.Join(", ", errors)}");
+            await HandleCustomErrorAsync(errors);
+        });
+}
+```
+For more detailed examples and usage information related to asynchronous operations, please refer to the sections on [Performing Actions on Success](#performing-an-action-on-success), [Handling Failures and Exceptions](#handling-failures-and-exceptions), [Switching Between Success and Failure Actions](#switching-between-success-and-failure-actions), [Transform the Result Based on Success or Failure](#transform-the-result-based-on-success-or-failure), and [Mapping a Result to Another Type](#mapping-a-result-to-another-type) in this README. The async extension methods provided by the `ResultAsyncExtensions` class work similarly to their synchronous counterparts but support async actions and transformations for seamless integration with asynchronous operations in your code.
+
 ## Try-Catch 
 ```csharp
     
