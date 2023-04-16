@@ -9,7 +9,7 @@
     <Authors>Meisam Alifallahi</Authors>
     <Description>Result&lt;T&gt; is a monad for modelling success (Ok) or failure (Err) operations.</Description>
     <PackageId>Arax.SimpleResult</PackageId>
-    <Version>1.2.1</Version>
+    <Version>1.2.2</Version>
     <PackageProjectUrl>https://github.com/araxis/SimpleResult</PackageProjectUrl>
     <RepositoryUrl>https://github.com/araxis/SimpleResult</RepositoryUrl>
     <PackageIcon>logo.png</PackageIcon>
