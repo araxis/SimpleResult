@@ -9,7 +9,7 @@ internal class Failure
         ErrorInfos =  new List<IError>(errorInfos);
         Exception = null;
     }
-    public Failure(Exception exception,params IError[] errors)
+    public Failure(Exception? exception,params IError[] errors)
     {
         Exception = exception;
         ErrorInfos = errors.ToList();

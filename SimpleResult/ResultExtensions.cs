@@ -158,14 +158,8 @@ public static class ResultExtensions
     }
     public static Result<TR> Map<TL, TR>(this Result<TL> result, Func<TL, TR> transform)
     {
-
-        return result.ExceptionOrNull() switch
-        {
-            null => Result<TR>.Success(transform(result.GetOrDefault())),
-            var exception => Result<TR>.Fail(exception)
-
-        };
-
-
+        return result.IsSuccess 
+            ? Result<TR>.Success(transform(result.GetOrDefault())) 
+            : Result<TR>.Fail(result.ExceptionOrNull(), result.Errors);
     }
 }

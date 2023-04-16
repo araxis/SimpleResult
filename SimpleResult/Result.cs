@@ -60,14 +60,14 @@ public readonly struct Result<T> : IResult<T>
 
     public static Result<T> Success(T value) => new(value, null);
     public static Result<T> Fail(Exception exception) => new(default, new Failure(exception));
-    public static Result<T> Fail(Exception exception,params IError[] errors) => new(default, new Failure(exception,errors));
-    public static Result<T> Fail(Exception exception,IEnumerable<IError> errors) =>Fail(exception,errors.ToArray());
+    public static Result<T> Fail(Exception? exception,params IError[] errors) => new(default, new Failure(exception,errors));
+    public static Result<T> Fail(Exception? exception,IEnumerable<IError> errors) =>Fail(exception,errors.ToArray());
     public static Result<T> Fail(params string[] message)
     {
         var errors = message.Select(m =>(IError) new Error(m)).ToArray();
         return Fail(errors);
     }
-    public static Result<T> Fail(Exception exception,params string[] message)
+    public static Result<T> Fail(Exception? exception,params string[] message)
     {
         var errors = message.Select(m =>(IError) new Error(m)).ToArray();
         return Fail(exception,errors);
