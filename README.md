@@ -19,7 +19,6 @@ Or via the .NET Core command line interface:
 
     dotnet add package Arax.SimpleResult
 
-## Usage
 
 The following sections demonstrate various ways to use the `SimpleResult` library for handling the results of operations.
 
