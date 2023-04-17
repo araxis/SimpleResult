@@ -9,6 +9,8 @@
 
 `SimpleResult`  is a lightweight library that provides a convenient way to handle the results of operations in your .NET applications. The library offers a straightforward approach to managing success and failure scenarios, making your code more readable, maintainable, and less prone to errors.
 
+[SimpleResult: A Better Alternative to Traditional Exception Handling](https://medium.com/@araxis/simpleresult-a-better-alternative-to-traditional-exception-handling-aff600919a40)
+
 ### Installing SimpleResult
 
 You should install [SimpleResult with NuGet](https://www.nuget.org/packages/Arax.SimpleResult):
