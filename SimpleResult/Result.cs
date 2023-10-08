@@ -7,15 +7,14 @@ public readonly record struct Result : IResult
     // Use expression-bodied properties for IsSuccess and IsFailure
     public bool IsSuccess => _failure == null;
     public bool IsFailure => _failure != null;
-    
     private Result(Failure? failure)
     {
         _failure = failure;
     }
 
     public Exception? ExceptionOrNull() => _failure?.Exception;
- 
-    public IReadOnlyCollection<IError> Errors => _failure?.ErrorInfos ?? new List<IError>();
+
+    public IReadOnlyList<IError> Errors => _failure?.ErrorInfos ?? new List<IError>();
 
     public static IResult Fail(Exception exception) => new Result(new Failure(exception));
     public static Result Success() => new(null);
@@ -54,7 +53,7 @@ public readonly struct Result<T> : IResult<T>
         _failure = failure;
     }
 
-    public IReadOnlyCollection<IError> Errors => _failure?.ErrorInfos ?? new List<IError>();
+    public IReadOnlyList<IError> Errors => _failure?.ErrorInfos ?? new List<IError>();
     public T GetOrDefault() => IsFailure ? default : _value;
     public Exception? ExceptionOrNull() => _failure?.Exception;
 

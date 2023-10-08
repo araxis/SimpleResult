@@ -3,7 +3,7 @@
 internal class Failure
 {
     public Exception? Exception { get; }
-    public IReadOnlyCollection<IError> ErrorInfos { get; } 
+    public IReadOnlyList<IError> ErrorInfos { get; }
     public Failure(params IError[] errorInfos)
     {
         ErrorInfos =  new List<IError>(errorInfos);
@@ -14,6 +14,4 @@ internal class Failure
         Exception = exception;
         ErrorInfos = errors.ToList();
     }
-  
- 
 }

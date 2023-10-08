@@ -4,7 +4,7 @@ public interface IResult
 {
     bool IsSuccess { get; }
     bool IsFailure { get; }
-    IReadOnlyCollection<IError> Errors { get; }
+    IReadOnlyList<IError> Errors { get; }
     Exception? ExceptionOrNull();
 
 }
