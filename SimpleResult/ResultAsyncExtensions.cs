@@ -29,6 +29,25 @@ public static class ResultAsyncExtensions
         }
         return result;
     }
+    public static async Task<IResult> OnErrors<TError>(this IResult result, Func<IReadOnlyList<TError>, Task> action) where TError : IError
+    {
+        if (result.Errors.OfType<TError>().Any())
+        {
+            await action(result.Errors.OfType<TError>().ToList());
+        }
+        return result;
+
+    }
+    public static async Task<IResult> OnError<TError>(this IResult result, Func<TError, Task> action) where TError : IError
+    {
+        var error = result.Errors.OfType<TError>().FirstOrDefault();
+        if (error != null)
+        {
+           await action(error);
+        }
+        return result;
+
+    }
     public static async Task<IResult> OnException(this IResult result, Func<Exception, Errors, Task> action)
     {
         var exception = result.ExceptionOrNull();
@@ -75,16 +94,16 @@ public static class ResultAsyncExtensions
             ? await onSuccess()
             : await onFailure(result.ExceptionOrNull(), result.Errors);
     }
-    public static async Task<TReturn> Fold<TReturn, T>(this IResult<T> result, Func<T, Task<TReturn>> onSuccess, Func<Exception?,Errors, Task<TReturn>> onFailure)
+    public static async Task<TReturn> Fold<TReturn, T>(this IResult<T> result, Func<T, Task<TReturn>> onSuccess, Func<Exception?, Errors, Task<TReturn>> onFailure)
     {
-        return result.IsSuccess 
-            ? await onSuccess(result.GetOrDefault()) 
+        return result.IsSuccess
+            ? await onSuccess(result.GetOrDefault())
             : await onFailure(result.ExceptionOrNull(), result.Errors);
     }
     public static async Task<Result<TR>> Map<TL, TR>(this Result<TL> result, Func<TL, Task<TR>> transform)
     {
-        return result.IsSuccess 
-            ? Result<TR>.Success(await transform(result.GetOrDefault())) 
+        return result.IsSuccess
+            ? Result<TR>.Success(await transform(result.GetOrDefault()))
             : Result<TR>.Fail(result.ExceptionOrNull(), result.Errors);
     }
 }
