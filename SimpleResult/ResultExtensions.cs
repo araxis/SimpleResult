@@ -42,7 +42,7 @@ public static class ResultExtensions
     public static IResult OnFailure<TError>(this IResult result, Action<Exception?, IReadOnlyList<TError>> action) where TError : IError
     {
         if (!result.IsFailure) return result;
-        if (result.Errors.OfType<TError>().Any())
+        if (result.HasError<TError>())
         {
             action(result.ExceptionOrNull(), result.Errors.OfType<TError>().ToList());
         }
@@ -52,7 +52,7 @@ public static class ResultExtensions
     public static IResult OnErrors<TError>(this IResult result, Action<IReadOnlyList<TError>> action) where TError : IError
     {
         if (!result.IsFailure) return result;
-        if (result.Errors.OfType<TError>().Any())
+        if (result.HasError<TError>())
         {
             action(result.Errors.OfType<TError>().ToList());
         }
@@ -103,7 +103,6 @@ public static class ResultExtensions
             onFailure(e);
         }
     }
-
     public static void Switch<TResult>(this TResult result, Action onSuccess, Action<Exception?,Errors> onFailure) where TResult : IResult
     {
         if (result.IsSuccess)
@@ -168,7 +167,6 @@ public static class ResultExtensions
 
         };
     }
-
     public static TReturn Fold<TReturn, T>(this IResult<T> result, Func<T, TReturn> onSuccess, Func<Exception?,Errors, TReturn> onFailure)
     {
         return result.IsSuccess

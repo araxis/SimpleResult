@@ -11,11 +11,11 @@ public readonly record struct Result : IResult
     {
         _failure = failure;
     }
-
-    public Exception? ExceptionOrNull() => _failure?.Exception;
-
     public IReadOnlyList<IError> Errors => _failure?.ErrorInfos ?? new List<IError>();
-
+    public Exception? ExceptionOrNull() => _failure?.Exception;
+    public bool HasException<TException>() where TException : Exception => ExceptionOrNull() is TException;
+    public bool HasInnerException<TException>() where TException : Exception => ExceptionOrNull()?.InnerException is TException;
+    public bool HasError<TError>() where TError : IError => Errors.OfType<TError>().Any();
     public static IResult Fail(Exception exception) => new Result(new Failure(exception));
     public static Result Success() => new(null);
     public static Result Fail(IEnumerable<IError> resultErrors) => new(new Failure(resultErrors.ToArray()));
@@ -36,6 +36,7 @@ public readonly record struct Result : IResult
 
     public static implicit operator Result(Exception exception) => (Result)Fail(exception);
     public static implicit operator Result(IError[] errorInfo) => Fail(errorInfo);
+    public static implicit operator Result(Error errorInfo) => Fail(errorInfo);
 }
 
 public readonly struct Result<T> : IResult<T>
@@ -56,7 +57,9 @@ public readonly struct Result<T> : IResult<T>
     public IReadOnlyList<IError> Errors => _failure?.ErrorInfos ?? new List<IError>();
     public T GetOrDefault() => IsFailure ? default : _value;
     public Exception? ExceptionOrNull() => _failure?.Exception;
-
+    public bool HasException<TException>() where TException : Exception => ExceptionOrNull() is TException;
+    public bool HasInnerException<TException>() where TException : Exception => ExceptionOrNull()?.InnerException is TException;
+    public bool HasError<TError>() where TError : IError => Errors.OfType<TError>().Any();
     public static Result<T> Success(T value) => new(value, null);
     public static Result<T> Fail(Exception exception) => new(default, new Failure(exception));
     public static Result<T> Fail(Exception? exception,params IError[] errors) => new(default, new Failure(exception,errors));
@@ -71,11 +74,11 @@ public readonly struct Result<T> : IResult<T>
         var errors = message.Select(m =>(IError) new Error(m)).ToArray();
         return Fail(exception,errors);
     }
-
     public static Result<T> Fail(IEnumerable<IError> errors) => new(default, new Failure(errors.ToArray()));
     public static Result<T> Fail(params IError[] errors) => new(default, new Failure(errors));
 
     public static implicit operator Result<T>(T value) => Success(value);
     public static implicit operator Result<T>(Exception exception) => Fail(exception);
     public static implicit operator Result<T>(IError[] errorInfos) => Fail(errorInfos);
+    public static implicit operator Result<T>(Error errorInfo) => Fail(errorInfo);
 }
